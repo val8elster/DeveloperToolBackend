@@ -18,6 +18,8 @@ public class User {
     public int level;
     public Long ownProjectId;
 
+    public String skills;
+
     @ManyToMany(mappedBy = "collaborators")
     private List<Project> projects = new ArrayList<>();
 
