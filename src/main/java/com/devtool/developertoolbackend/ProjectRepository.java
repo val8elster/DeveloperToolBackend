@@ -1,6 +1,5 @@
-package com.devtool.repositories;
+package com.devtool.developertoolbackend;
 
-import com.devtool.valueobjects.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {

@@ -1,7 +1,5 @@
-package com.devtool.services;
+package com.devtool.developertoolbackend;
 
-import com.devtool.valueobjects.User;
-import com.devtool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

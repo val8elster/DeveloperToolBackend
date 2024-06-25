@@ -1,6 +1,5 @@
-package com.devtool.repositories;
+package com.devtool.developertoolbackend;
 
-import com.devtool.valueobjects.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
