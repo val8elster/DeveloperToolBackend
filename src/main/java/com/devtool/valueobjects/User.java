@@ -1,4 +1,4 @@
-package com.devtool.developertoolbackend;
+package com.devtool.valueobjects;
 
 import jakarta.persistence.*;
 
@@ -16,9 +16,9 @@ public class User {
     private String password;
 
     public int level;
-    public int ownProjectId;
+    public Long ownProjectId;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "collaborators")
     private List<Project> projects = new ArrayList<>();
 
     // methods

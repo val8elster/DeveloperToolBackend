@@ -1,4 +1,4 @@
-package com.devtool.developertoolbackend;
+package com.devtool.valueobjects;
 
 import jakarta.persistence.*;
 
@@ -13,7 +13,9 @@ public class Project {
     public String name;
     public String description;
 
-    public int leaderId;
+    public Long leaderId;
+
+    public boolean completed;
 
     @ManyToMany
     @JoinTable(
@@ -21,5 +23,5 @@ public class Project {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    public List<User> users = new ArrayList<>();
+    public List<User> collaborators = new ArrayList<>();
 }
