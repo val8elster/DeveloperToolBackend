@@ -1,4 +1,4 @@
-package com.devtool.developertoolbackend;
+package com.devtool.developertoolbackend.valueobjects;
 
 import jakarta.persistence.*;
 

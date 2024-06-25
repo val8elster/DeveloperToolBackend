@@ -1,5 +1,9 @@
-package com.devtool.developertoolbackend;
+package com.devtool.developertoolbackend.controllers;
 
+import com.devtool.developertoolbackend.valueobjects.Project;
+import com.devtool.developertoolbackend.valueobjects.User;
+import com.devtool.developertoolbackend.services.ProjectService;
+import com.devtool.developertoolbackend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
