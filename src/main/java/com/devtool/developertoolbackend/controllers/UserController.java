@@ -60,4 +60,10 @@ public class UserController {
         user.level++;
         userService.saveUser(user);
     }
+
+    @DeleteMapping("/delete/{userId}")
+    public void deleteUser(@PathVariable Long userId){
+        User user = getUserById(userId);
+        userService.userRepository.delete(user);
+    }
 }

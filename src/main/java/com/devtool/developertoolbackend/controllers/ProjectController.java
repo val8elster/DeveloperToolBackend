@@ -61,4 +61,10 @@ public class ProjectController {
         project.collaborators.add(user);
         return projectService.saveProject(project);
     }
+
+    @DeleteMapping("/delete/{projectId}")
+    public void deleteProject(@PathVariable Long projectId){
+        Project project = getProjectById(projectId);
+        projectService.projectRepository.delete(project);
+    }
 }
