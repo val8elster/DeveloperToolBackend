@@ -1,6 +1,7 @@
 package com.devtool.developertoolbackend.controllers;
 
 import com.devtool.developertoolbackend.valueobjects.Project;
+import com.devtool.developertoolbackend.valueobjects.Skill;
 import com.devtool.developertoolbackend.valueobjects.User;
 import com.devtool.developertoolbackend.services.ProjectService;
 import com.devtool.developertoolbackend.services.UserService;
@@ -45,20 +46,25 @@ public class ProjectController {
     @GetMapping("check/{projectId}")
     public boolean isCompleted(@PathVariable Long projectId){
         Project project = getProjectById(projectId);
-        return project.completed;
+        return project.isCompleted();
     }
 
     @GetMapping("/{projectId}/users")
     public List<User> getAllCollaborators(@PathVariable Long projectId){
         Project project = getProjectById(projectId);
-        return project.collaborators;
+        return project.getCollaborators();
+    }
+
+    @GetMapping("{projectId}/skills")
+    public List<Skill> getAllSkills(@PathVariable Long projectId){
+        return getProjectById(projectId).getRequiredSkills();
     }
 
     @PostMapping("/{projectId}/users/{userId}")
     public Project addUserToProject(@PathVariable Long projectId, @PathVariable Long userId) {
         Project project = getProjectById(projectId);
         User user = userService.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        project.collaborators.add(user);
+        project.getCollaborators().add(user);
         return projectService.saveProject(project);
     }
 

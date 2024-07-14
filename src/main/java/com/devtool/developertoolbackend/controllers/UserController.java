@@ -1,6 +1,7 @@
 package com.devtool.developertoolbackend.controllers;
 
 import com.devtool.developertoolbackend.valueobjects.Project;
+import com.devtool.developertoolbackend.valueobjects.Skill;
 import com.devtool.developertoolbackend.valueobjects.User;
 import com.devtool.developertoolbackend.services.ProjectService;
 import com.devtool.developertoolbackend.services.UserService;
@@ -51,13 +52,14 @@ public class UserController {
     @GetMapping("/{userId}/project")
     public Project getLeadersProject(@PathVariable Long userId){
         User user = getUserById(userId);
-        return projectService.projectRepository.findById(user.ownProjectId).orElseThrow(() -> new RuntimeException("Project not found"));
+        return projectService.projectRepository.findById(user.getOwnProjectId()).orElse(null);
     }
 
     @PutMapping("/{userId}/levelUp")
     public void levelUp(@PathVariable Long userId){
         User user = getUserById(userId);
-        user.level++;
+        int level = user.getLevel() + 1;
+        user.setLevel(level);
         userService.saveUser(user);
     }
 
@@ -65,5 +67,15 @@ public class UserController {
     public void deleteUser(@PathVariable Long userId){
         User user = getUserById(userId);
         userService.userRepository.delete(user);
+    }
+
+    @GetMapping("/{userId}/collaborates/{projectId}")
+    public boolean collaborate(@PathVariable Long userId, @PathVariable Long projectId){
+        return getUserById(userId).isCollaborator(projectId);
+    }
+
+    @GetMapping("/{userId}/hasSkill/{skill}")
+    public boolean hasSkill(@PathVariable Long userId, @PathVariable Skill skill){
+        return getUserById(userId).getSkills().contains(skill);
     }
 }
