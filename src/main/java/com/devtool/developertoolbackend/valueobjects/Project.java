@@ -1,21 +1,25 @@
 package com.devtool.developertoolbackend.valueobjects;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String name;
-    public String description;
+    private Long id;
+    private String name;
+    private String description;
 
-    public Long leaderId;
+    private Long leaderId;
 
-    public boolean completed;
+    private boolean completed;
 
     @ManyToMany
     @JoinTable(
@@ -23,5 +27,11 @@ public class Project {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    public List<User> collaborators = new ArrayList<>();
+    private List<User> collaborators = new ArrayList<>();
+
+    @ElementCollection(targetClass = Skill.class)
+    @CollectionTable(name = "project_skills", joinColumns = @JoinColumn(name = "project_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "skill")
+    private List<Skill> requiredSkills = new ArrayList<>();
 }

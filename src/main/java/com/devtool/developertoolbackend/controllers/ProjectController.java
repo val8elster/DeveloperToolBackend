@@ -1,6 +1,7 @@
 package com.devtool.developertoolbackend.controllers;
 
 import com.devtool.developertoolbackend.valueobjects.Project;
+import com.devtool.developertoolbackend.valueobjects.Skill;
 import com.devtool.developertoolbackend.valueobjects.User;
 import com.devtool.developertoolbackend.services.ProjectService;
 import com.devtool.developertoolbackend.services.UserService;
@@ -16,6 +17,8 @@ public class ProjectController {
     private ProjectService projectService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserController userController;
 
     @GetMapping
     public List<Project> getAllProjects() {
@@ -45,20 +48,25 @@ public class ProjectController {
     @GetMapping("check/{projectId}")
     public boolean isCompleted(@PathVariable Long projectId){
         Project project = getProjectById(projectId);
-        return project.completed;
+        return project.isCompleted();
     }
 
     @GetMapping("/{projectId}/users")
     public List<User> getAllCollaborators(@PathVariable Long projectId){
         Project project = getProjectById(projectId);
-        return project.collaborators;
+        return project.getCollaborators();
+    }
+
+    @GetMapping("{projectId}/skills")
+    public List<Skill> getAllSkills(@PathVariable Long projectId){
+        return getProjectById(projectId).getRequiredSkills();
     }
 
     @PostMapping("/{projectId}/users/{userId}")
     public Project addUserToProject(@PathVariable Long projectId, @PathVariable Long userId) {
         Project project = getProjectById(projectId);
         User user = userService.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        project.collaborators.add(user);
+        project.getCollaborators().add(user);
         return projectService.saveProject(project);
     }
 
@@ -66,5 +74,20 @@ public class ProjectController {
     public void deleteProject(@PathVariable Long projectId){
         Project project = getProjectById(projectId);
         projectService.projectRepository.delete(project);
+    }
+
+    @PutMapping("/{projectId}/addcollab/{userId}")
+    public boolean addCollaborator(@PathVariable Long projectId, @PathVariable Long userId){
+        User user = userController.getUserById(userId);
+
+        Project project = getProjectById(projectId);
+
+        if(project.getCollaborators().contains(user)){
+            return false;
+        }
+        else {
+            project.getCollaborators().add(user);
+            return true;
+        }
     }
 }
