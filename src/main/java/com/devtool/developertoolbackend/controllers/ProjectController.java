@@ -17,6 +17,8 @@ public class ProjectController {
     private ProjectService projectService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserController userController;
 
     @GetMapping
     public List<Project> getAllProjects() {
@@ -72,5 +74,20 @@ public class ProjectController {
     public void deleteProject(@PathVariable Long projectId){
         Project project = getProjectById(projectId);
         projectService.projectRepository.delete(project);
+    }
+
+    @PutMapping("/{projectId}/addcollab/{userId}")
+    public boolean addCollaborator(@PathVariable Long projectId, @PathVariable Long userId){
+        User user = userController.getUserById(userId);
+
+        Project project = getProjectById(projectId);
+
+        if(project.getCollaborators().contains(user)){
+            return false;
+        }
+        else {
+            project.getCollaborators().add(user);
+            return true;
+        }
     }
 }
