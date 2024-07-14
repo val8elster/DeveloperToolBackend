@@ -2,9 +2,9 @@ package com.devtool.developertoolbackend.controllers;
 
 import com.devtool.developertoolbackend.valueobjects.Project;
 import com.devtool.developertoolbackend.valueobjects.Skill;
-import com.devtool.developertoolbackend.valueobjects.User;
+import com.devtool.developertoolbackend.valueobjects.Employee;
 import com.devtool.developertoolbackend.services.ProjectService;
-import com.devtool.developertoolbackend.services.UserService;
+import com.devtool.developertoolbackend.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +16,9 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
     @Autowired
-    private UserService userService;
+    private EmployeeService employeeService;
     @Autowired
-    private UserController userController;
+    private EmployeeController employeeController;
 
     @GetMapping
     public List<Project> getAllProjects() {
@@ -52,7 +52,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/users")
-    public List<User> getAllCollaborators(@PathVariable Long projectId){
+    public List<Employee> getAllCollaborators(@PathVariable Long projectId){
         Project project = getProjectById(projectId);
         return project.getCollaborators();
     }
@@ -63,10 +63,10 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/users/{userId}")
-    public Project addUserToProject(@PathVariable Long projectId, @PathVariable Long userId) {
+    public Project addEmployeeToProject(@PathVariable Long projectId, @PathVariable Long userId) {
         Project project = getProjectById(projectId);
-        User user = userService.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        project.getCollaborators().add(user);
+        Employee employee = employeeService.employeeRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        project.getCollaborators().add(employee);
         return projectService.saveProject(project);
     }
 
@@ -78,15 +78,15 @@ public class ProjectController {
 
     @PutMapping("/{projectId}/addcollab/{userId}")
     public boolean addCollaborator(@PathVariable Long projectId, @PathVariable Long userId){
-        User user = userController.getUserById(userId);
+        Employee employee = employeeController.getEmployeeById(userId);
 
         Project project = getProjectById(projectId);
 
-        if(project.getCollaborators().contains(user)){
+        if(project.getCollaborators().contains(employee)){
             return false;
         }
         else {
-            project.getCollaborators().add(user);
+            project.getCollaborators().add(employee);
             return true;
         }
     }
