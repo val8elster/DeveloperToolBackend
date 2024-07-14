@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class User {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,7 @@ public class User {
     private Long ownProjectId;
 
     @ElementCollection(targetClass = Skill.class)
-    @CollectionTable(name = "user_skills", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "employee_skills", joinColumns = @JoinColumn(name = "employee_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "skill")
     private List<Skill> skills = new ArrayList<>();

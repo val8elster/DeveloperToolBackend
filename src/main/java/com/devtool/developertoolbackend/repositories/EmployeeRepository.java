@@ -1,9 +1,9 @@
 package com.devtool.developertoolbackend.repositories;
 
-import com.devtool.developertoolbackend.valueobjects.User;
+import com.devtool.developertoolbackend.valueobjects.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     public boolean existsByEmail(String mail);
     public boolean existsByName(String name);
 }

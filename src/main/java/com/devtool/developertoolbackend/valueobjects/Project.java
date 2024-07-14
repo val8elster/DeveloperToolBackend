@@ -25,9 +25,9 @@ public class Project {
     @JoinTable(
             name = "collaborates_on",
             joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    private List<User> collaborators = new ArrayList<>();
+    private List<Employee> collaborators = new ArrayList<>();
 
     @ElementCollection(targetClass = Skill.class)
     @CollectionTable(name = "project_skills", joinColumns = @JoinColumn(name = "project_id"))
