@@ -30,7 +30,7 @@ public class ProjectController {
         return projectService.projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public Project createProject(@RequestBody Project project) {
         return projectService.saveProject(project);
     }
