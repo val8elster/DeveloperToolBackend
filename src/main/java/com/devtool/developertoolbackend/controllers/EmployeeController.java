@@ -77,6 +77,11 @@ public class EmployeeController {
     public void deleteUser(@PathVariable Long employeeId){
         Employee employee = getEmployeeById(employeeId);
         employeeService.employeeRepository.delete(employee);
+
+        Project project = projectService.projectRepository.findById(employee.getOwnProjectId()).orElse(null);
+        if(project != null){
+            projectService.projectRepository.delete(project);
+        }
     }
 
     @GetMapping("/{employeeId}/collaborates/{projectId}")

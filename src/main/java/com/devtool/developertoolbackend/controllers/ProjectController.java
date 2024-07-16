@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/projects")
@@ -35,15 +36,26 @@ public class ProjectController {
         return projectService.saveProject(project);
     }
 
-    @GetMapping("/exists/{name}")
+    @GetMapping("/exists/name/{name}")
     public boolean existsByName(@PathVariable String name){
-        return projectService.projectRepository.existsByName(name);
+        List<Project> projects = projectService.getAllProjects();
+        for (Project project : projects) {
+            if(Objects.equals(project.getName(), name)){
+                return true;
+            }
+        }
+        return false;
     }
 
-    @GetMapping("/exists/{leaderId}")
+    @GetMapping("/exists/leader/{leaderId}")
     public boolean existsByLeader(@PathVariable Long leaderId){
-        return projectService.projectRepository.existsByLeaderId(leaderId);
-    }
+        List<Project> projects = projectService.getAllProjects();
+        for (Project project : projects) {
+            if(Objects.equals(project.getLeaderId(), leaderId)){
+                return true;
+            }
+        }
+        return false;    }
 
     @GetMapping("check/{projectId}")
     public boolean isCompleted(@PathVariable Long projectId){
