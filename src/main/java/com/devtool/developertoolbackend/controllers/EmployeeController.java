@@ -93,4 +93,25 @@ public class EmployeeController {
     public boolean hasSkill(@PathVariable Long employeeId, @PathVariable Skill skill){
         return getEmployeeById(employeeId).getSkills().contains(skill);
     }
+
+    @PutMapping("/{employeeId}/edit/name/{newName}")
+    public void editName(@PathVariable Long employeeId, @PathVariable String newName){
+        Employee e = getEmployeeById(employeeId);
+        e.setName(newName);
+        employeeRepository.save(e);
+    }
+
+    @PutMapping("/{employeeId}/edit/mail/{newMail}")
+    public void editMail(@PathVariable Long employeeId, @PathVariable String newMail){
+        Employee e = getEmployeeById(employeeId);
+        e.setEmail(newMail);
+        employeeRepository.save(e);
+    }
+
+    @PutMapping("/{employeeId}/edit/skills")
+    public void editName(@PathVariable Long employeeId, @RequestBody List<Skill> newSkills){
+        Employee e = getEmployeeById(employeeId);
+        e.setSkills(newSkills);
+        employeeRepository.save(e);
+    }
 }

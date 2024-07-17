@@ -1,5 +1,7 @@
 package com.devtool.developertoolbackend.controllers;
 
+import com.devtool.developertoolbackend.repositories.EmployeeRepository;
+import com.devtool.developertoolbackend.repositories.ProjectRepository;
 import com.devtool.developertoolbackend.valueobjects.Project;
 import com.devtool.developertoolbackend.valueobjects.Skill;
 import com.devtool.developertoolbackend.valueobjects.Employee;
@@ -20,6 +22,10 @@ public class ProjectController {
     private EmployeeService employeeService;
     @Autowired
     private EmployeeController employeeController;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @GetMapping
     public List<Project> getAllProjects() {
@@ -94,5 +100,16 @@ public class ProjectController {
         Project project = getProjectById(projectId);
         Employee employee = employeeService.employeeRepository.findById(employeeId).orElse(null);
         return project.getCollaborators().contains(employee);
+    }
+
+    @PutMapping("/{projectId}/complete")
+    public void completeProject(@PathVariable Long projectId){
+        Project p = getProjectById(projectId);
+        p.setCompleted(true);
+        for(Employee e : p.getCollaborators()){
+            e.levelUp();
+            employeeRepository.save(e);
+        }
+        projectRepository.save(p);
     }
 }

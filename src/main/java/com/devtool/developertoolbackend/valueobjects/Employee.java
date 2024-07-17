@@ -44,4 +44,6 @@ public class Employee {
     public boolean isCollaborator(Long p) {
         return this.projects.contains(p);
     }
+
+    public void levelUp() { this.level++; }
 }
