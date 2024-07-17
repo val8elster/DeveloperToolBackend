@@ -34,4 +34,9 @@ public class Project {
     @Enumerated(EnumType.STRING)
     @Column(name = "skill")
     private List<Skill> requiredSkills = new ArrayList<>();
+
+    public void addCollaborator(Employee employee) {
+        collaborators.add(employee);
+        employee.getProjects().add(this);
+    }
 }

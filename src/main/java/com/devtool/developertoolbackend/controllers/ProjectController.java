@@ -74,12 +74,13 @@ public class ProjectController {
         return getProjectById(projectId).getRequiredSkills();
     }
 
-    @PostMapping("/{projectId}/users/{userId}")
+    @PutMapping("/{projectId}/users/{userId}")
     public Project addEmployeeToProject(@PathVariable Long projectId, @PathVariable Long userId) {
         Project project = getProjectById(projectId);
-        Employee employee = employeeService.employeeRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        project.getCollaborators().add(employee);
-        return projectService.saveProject(project);
+        Employee employee = employeeService.employeeRepository.findById(userId).orElse(null);
+        project.addCollaborator(employee);
+        projectService.projectRepository.save(project);
+        return null;
     }
 
     @DeleteMapping("/delete/{projectId}")
@@ -88,18 +89,10 @@ public class ProjectController {
         projectService.projectRepository.delete(project);
     }
 
-    @PutMapping("/{projectId}/addcollab/{userId}")
-    public boolean addCollaborator(@PathVariable Long projectId, @PathVariable Long userId){
-        Employee employee = employeeController.getEmployeeById(userId);
-
+    @GetMapping("/{projectId}/hasCollaborator/{employeeId}")
+    public boolean hasCollaborator(@PathVariable Long projectId, @PathVariable Long employeeId){
         Project project = getProjectById(projectId);
-
-        if(project.getCollaborators().contains(employee)){
-            return false;
-        }
-        else {
-            project.getCollaborators().add(employee);
-            return true;
-        }
+        Employee employee = employeeService.employeeRepository.findById(employeeId).orElse(null);
+        return project.getCollaborators().contains(employee);
     }
 }
