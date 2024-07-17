@@ -37,6 +37,6 @@ public class Project {
 
     public void addCollaborator(Employee employee) {
         collaborators.add(employee);
-        employee.getProjects().add(this);
+        employee.getProjects().add(this.getId());
     }
 }
