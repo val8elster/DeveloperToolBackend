@@ -112,4 +112,25 @@ public class ProjectController {
         }
         projectRepository.save(p);
     }
+
+    @PutMapping("/{projectId}/edit/name/{name}")
+    public void editName(@PathVariable Long projectId, @PathVariable String newName){
+        Project p = getProjectById(projectId);
+        p.setName(newName);
+        projectRepository.save(p);
+    }
+
+    @PutMapping("/{projectId}/edit/description/{description}")
+    public void editDescription(@PathVariable Long projectId, @PathVariable String newDescription){
+        Project p = getProjectById(projectId);
+        p.setDescription(newDescription);
+        projectRepository.save(p);
+    }
+
+    @PutMapping("/{projectId}/edit/skills")
+    public void editName(@PathVariable Long projectId, @RequestBody List<Skill> newSkills){
+        Project p = getProjectById(projectId);
+        p.setRequiredSkills(newSkills);
+        projectRepository.save(p);
+    }
 }
