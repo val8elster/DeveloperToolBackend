@@ -110,6 +110,11 @@ public class ProjectController {
             e.levelUp();
             employeeRepository.save(e);
         }
+        Employee em = employeeController.getEmployeeById(p.getLeaderId());
+        em.levelUp();
+        em.levelUp();
+        employeeRepository.save(em);
+
         projectRepository.save(p);
     }
 
