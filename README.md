@@ -18,8 +18,8 @@ myCertificate.crt -keystore keystore.p12
 
 Anschließend müssen die im Bild zu sehenden Values in der application.properties gesetzt werden. 
 
-BILDBILD
- 
+![ssl](https://github.com/user-attachments/assets/fb33a7fd-8051-48c5-9d60-2dd6419b032b)
+
 ### Builden der .jar für vereinfachtes Starten des Backends 
 
 Um das Backend mit allen dependencies ohne langwieriges Kopieren und Installieren der dependencies zu realisieren wird in diesem Schritt eine .jar Datei gebaut.  
@@ -35,8 +35,8 @@ Voraussetzungen:
   sudo apt install maven -y
   ~~~
 
-BILDBILD
- 
+![build1](https://github.com/user-attachments/assets/2424f0cc-8fb8-46e0-a03a-f287748c73ac)
+
 Im gezeigten Fall wird das builden der .jar mit Hilfe von WSL Ubuntu 22.04 LTS durchgeführt.  
 
 Im Root Verzeichnis des SourceCodes wird der Build einfach mittels  
@@ -53,7 +53,7 @@ java -jar DeveloperToolBackend-0.0.1-SNAPSHOT.jar
 ~~~
 eingeben nachdem entweder in den target Ordner gewechselt bzw. die Datei kopiert wurde.  
 
-BILDBILD
+![build2](https://github.com/user-attachments/assets/a71e2ec3-ab4c-48fa-af80-99a98fea2ce4)
 
 Für externes Hosting auf einem Remote Server muss der keystore.pk12 entsprechend dem Pfad in der application.properties abgelegt werden und empfiehlt sich das Starten des Backends mittels SCREEN, sodass nach schließen der Remote Sitzung das Backend weiterläuft. 
 
