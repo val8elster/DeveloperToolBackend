@@ -28,8 +28,10 @@ public class Employee {
     @Column(name = "skill")
     private List<Skill> skills = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "collaborators")
-    private List<Project> projects = new ArrayList<>();
+    @ElementCollection(targetClass = Long.class)
+    @CollectionTable(name = "employee_projects", joinColumns = @JoinColumn(name = "employee_id"))
+    @Column(name = "projects")
+    private List<Long> projects = new ArrayList<>();
 
     // methods
 
@@ -40,9 +42,8 @@ public class Employee {
     public boolean hasRequiredSkill(Skill s){ return this.skills.contains(s); }
 
     public boolean isCollaborator(Long p) {
-        for (Project ps : this.projects) {
-            if(ps.getId().equals(p)) return true;
-        }
-        return false;
+        return this.projects.contains(p);
     }
+
+    public void levelUp() { this.level++; }
 }

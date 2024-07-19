@@ -1,5 +1,6 @@
 package com.devtool.developertoolbackend.controllers;
 
+import com.devtool.developertoolbackend.repositories.EmployeeRepository;
 import com.devtool.developertoolbackend.valueobjects.Employee;
 import com.devtool.developertoolbackend.valueobjects.Project;
 import com.devtool.developertoolbackend.valueobjects.Skill;
@@ -16,6 +17,8 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
     @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
     private ProjectService projectService;
 
     @GetMapping
@@ -25,12 +28,19 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}")
     public Employee getEmployeeById(@PathVariable Long employeeId){
-        return employeeService.employeeRepository.findById(employeeId).orElseThrow(() -> new RuntimeException("User not found"));
+        return employeeService.employeeRepository.findById(employeeId).orElse(null);
     }
 
-    @PostMapping
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/get/name/{name}")
+    public Employee getEmployeeByName(@PathVariable String name){
+        return employeeService.employeeRepository.findByName(name);
+    }
+
+    @PostMapping("/create")
     public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeService.saveUser(employee);
+        System.out.println(employee.toString());
+        return employeeService.employeeRepository.save(employee);
     }
 
     @GetMapping("{employeeId}/login/{password}")
@@ -39,12 +49,12 @@ public class EmployeeController {
         return employee.isMatchingPassword(password);
     }
 
-    @GetMapping("/exists/{mail}")
+    @GetMapping("/exists/mail/{mail}")
     public boolean existsByMail(@PathVariable String mail){
         return employeeService.employeeRepository.existsByEmail(mail);
     }
 
-    @GetMapping("/exists/{username}")
+    @GetMapping("/exists/name/{username}")
     public boolean existsByUsername(@PathVariable String username){
         return employeeService.employeeRepository.existsByName(username);
     }
@@ -60,13 +70,18 @@ public class EmployeeController {
         Employee employee = getEmployeeById(employeeId);
         int level = employee.getLevel() + 1;
         employee.setLevel(level);
-        employeeService.saveUser(employee);
+        employeeService.employeeRepository.save(employee);
     }
 
     @DeleteMapping("/delete/{employeeId}")
     public void deleteUser(@PathVariable Long employeeId){
         Employee employee = getEmployeeById(employeeId);
         employeeService.employeeRepository.delete(employee);
+
+        Project project = projectService.projectRepository.findById(employee.getOwnProjectId()).orElse(null);
+        if(project != null){
+            projectService.projectRepository.delete(project);
+        }
     }
 
     @GetMapping("/{employeeId}/collaborates/{projectId}")
@@ -77,5 +92,26 @@ public class EmployeeController {
     @GetMapping("/{employeeId}/hasSkill/{skill}")
     public boolean hasSkill(@PathVariable Long employeeId, @PathVariable Skill skill){
         return getEmployeeById(employeeId).getSkills().contains(skill);
+    }
+
+    @PutMapping("/{employeeId}/edit/name/{newName}")
+    public void editName(@PathVariable Long employeeId, @PathVariable String newName){
+        Employee e = getEmployeeById(employeeId);
+        e.setName(newName);
+        employeeRepository.save(e);
+    }
+
+    @PutMapping("/{employeeId}/edit/mail/{newMail}")
+    public void editMail(@PathVariable Long employeeId, @PathVariable String newMail){
+        Employee e = getEmployeeById(employeeId);
+        e.setEmail(newMail);
+        employeeRepository.save(e);
+    }
+
+    @PutMapping("/{employeeId}/edit/skills")
+    public void editName(@PathVariable Long employeeId, @RequestBody List<Skill> newSkills){
+        Employee e = getEmployeeById(employeeId);
+        e.setSkills(newSkills);
+        employeeRepository.save(e);
     }
 }
